@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace PaintGameRedux
 {
@@ -11,6 +12,9 @@ namespace PaintGameRedux
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
+        Player playerOne;
+        InputClass input;
 
         public Game1()
         {
@@ -26,7 +30,8 @@ namespace PaintGameRedux
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            playerOne = new Player();
+            input = new InputClass();
 
             base.Initialize();
         }
@@ -40,7 +45,7 @@ namespace PaintGameRedux
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            playerOne.LoadContent(Content);
         }
 
         /// <summary>
@@ -59,10 +64,14 @@ namespace PaintGameRedux
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            input.beginUpdate();
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            playerOne.Update(input);
+
+            input.endUpdate();
 
             base.Update(gameTime);
         }
@@ -75,7 +84,11 @@ namespace PaintGameRedux
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            spriteBatch.Begin();
+
+            playerOne.Draw(spriteBatch);
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
