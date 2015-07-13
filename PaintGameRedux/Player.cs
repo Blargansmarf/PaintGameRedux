@@ -8,14 +8,14 @@ namespace PaintGameRedux
 {
     class Player
     {
-        int x, y;
+        float x, y;
         Texture2D texture;
         enum PlayerState { IDLE, MOVING, JUMPING, FALLING };
         PlayerState state;
-        int xVel, yVel;
-        int acceleration, jumpHeight;
-        int maxMoveSpeed, maxFallSpeed;
-        int gravity;
+        float xVel, yVel;
+        float acceleration, jumpHeight;
+        float maxMoveSpeed, maxFallSpeed;
+        float gravity;
 
         public Player()
         {
@@ -29,11 +29,11 @@ namespace PaintGameRedux
             y = 0;
             xVel = 0;
             yVel = 0;
-            acceleration = 1;
-            jumpHeight = 20;
-            maxMoveSpeed = 6;
-            maxFallSpeed = 20;
-            gravity = 2;
+            acceleration = .6f;
+            jumpHeight = 17;
+            maxMoveSpeed = 5;
+            maxFallSpeed = 15;
+            gravity = 1.1f;
         }
 
         public void LoadContent(ContentManager Content)
@@ -49,6 +49,11 @@ namespace PaintGameRedux
             {
                 state = PlayerState.JUMPING;
                 yVel = -jumpHeight;
+            }
+            if (input.currentKeyboardState.IsKeyUp(Keys.Space) && state == PlayerState.JUMPING)
+            {
+                state = PlayerState.FALLING;
+                yVel = 0;
             }
             if (yVel >= 0 && state == PlayerState.JUMPING)
             {
@@ -66,7 +71,9 @@ namespace PaintGameRedux
             else
                 if (xVel > 0)
                 {
-                    xVel--;
+                    xVel -= acceleration;
+                    if (xVel < 0)
+                        xVel = 0;
                 }
             if (input.currentKeyboardState.IsKeyDown(Keys.Left))
             {
@@ -79,7 +86,9 @@ namespace PaintGameRedux
             else
                 if (xVel < 0)
                 {
-                    xVel++;
+                    xVel += acceleration;
+                    if (xVel > 0)
+                        xVel = 0;
                 }
 
             if (state == PlayerState.JUMPING || state == PlayerState.FALLING)
