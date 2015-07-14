@@ -14,6 +14,7 @@ namespace PaintGameRedux
         SpriteBatch spriteBatch;
 
         Player playerOne;
+
         InputClass input;
 
         public Game1()

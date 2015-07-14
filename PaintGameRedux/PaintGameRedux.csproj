@@ -43,6 +43,7 @@
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="World.cs" />
     <Compile Include="WorldBlock.cs" />
   </ItemGroup>
   <ItemGroup>
