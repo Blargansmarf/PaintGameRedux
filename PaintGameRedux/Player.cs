@@ -17,6 +17,8 @@ namespace PaintGameRedux
         float maxMoveSpeed, maxFallSpeed;
         float gravity;
 
+        Rectangle testRect;
+
         public Player()
         {
             Initialize();
@@ -34,6 +36,8 @@ namespace PaintGameRedux
             maxMoveSpeed = 5;
             maxFallSpeed = 15;
             gravity = 1.1f;
+
+            testRect = new Rectangle(0, 300, 300, 40);
         }
 
         public void LoadContent(ContentManager Content)
@@ -91,7 +95,7 @@ namespace PaintGameRedux
                         xVel = 0;
                 }
 
-            if (state == PlayerState.JUMPING || state == PlayerState.FALLING)
+            if (state != PlayerState.IDLE)
             {
                 yVel += gravity;
                 if (yVel > maxFallSpeed)
@@ -112,9 +116,16 @@ namespace PaintGameRedux
             x += xVel;
             y += yVel;
 
-            if (y > 300)
+            checkCollision();
+        }
+
+        public void checkCollision()
+        {
+            Rectangle playerRect = new Rectangle((int)x, (int)y, (int)texture.Width, (int)texture.Height);
+
+            if (playerRect.Intersects(testRect))
             {
-                y = 300;
+                y = testRect.Top - texture.Height;
                 yVel = 0;
                 state = PlayerState.IDLE;
             }
@@ -123,6 +134,7 @@ namespace PaintGameRedux
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, new Vector2(x, y), Color.White);
+            spriteBatch.Draw(texture, testRect, Color.Black);
         }
     }
 }
