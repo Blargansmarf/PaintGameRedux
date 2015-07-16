@@ -114,6 +114,11 @@ namespace PaintGameRedux
                 maxMoveSpeed = 6;
             }
 
+            if (yVel > 0)
+            {
+                state = PlayerState.FALLING;
+            }
+
             x += xVel;
             y += yVel;
 
